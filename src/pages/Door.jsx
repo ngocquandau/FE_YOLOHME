@@ -96,7 +96,7 @@ const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
           <div className="history-section">
             <h2>Lịch sử mở cửa</h2>
             <div className="history-status">
-              <span>Tắt</span>
+              {/* <span>Tắt</span> */}
             </div>
             <table className="history-table">
               <thead>
