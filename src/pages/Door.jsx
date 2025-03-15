@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Menu from '../components/Menu';
 import './Door.css';
 
 const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
@@ -8,12 +9,6 @@ const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
   const [error, setError] = useState('');
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-
-  // Xử lý đăng xuất
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    navigate('/');
-  };
 
   // Xử lý nhập mật mã
   const handlePasswordChange = (e) => {
@@ -24,15 +19,16 @@ const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
   // Xử lý mở cửa
   const handleOpenDoor = () => {
     if (password === '112233') {
-      setIsDoorOn(true); // Cập nhật trạng thái cửa thành "Mở"
+      setIsDoorOn(true);
       setError('');
       alert('Cửa đã được mở!');
+      navigate('/'); // Quay lại trang Start sau khi mở cửa thành công
     } else {
       setError('Mật mã không đúng!');
     }
   };
 
-  // Dữ liệu lịch sử (tạm thời, sau này lấy từ backend)
+  // Dữ liệu lịch sử
   const historyData = [
     { name: 'Đậu Ngọc Quân', id: '#000001', method: 'Nhập mật mã', date: '28 Jan, 12:30 AM', status: 'Thành công', image: 'https://via.placeholder.com/100' },
     { name: 'Nguyen Van A', id: '#000002', method: 'Face AI', date: '28 Jan, 12:30 AM', status: 'Thất bại', image: 'https://via.placeholder.com/100' },
@@ -52,40 +48,15 @@ const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
     setSelectedImage(null);
   };
 
-  // Xử lý Face AI (bổ sung sau)
+  // Xử lý Face AI
   const handleFaceAI = () => {
     alert('Chức năng Face AI: Yêu cầu chụp ảnh từ thiết bị (chưa triển khai).');
-    // Sau này có thể dùng navigator.mediaDevices.getUserMedia để chụp ảnh
   };
 
   return (
     <div className="door-container">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="user-info">
-          <img src="/img/logo_admin.png" alt="User Avatar" className="avatar" />
-          <span className="username">Long</span>
-        </div>
-        <nav className="sidebar-nav">
-          <Link to="/start">
-            <span role="img" aria-label="home">🏠</span> Home
-          </Link>
-          <Link to="/smart-door" className="active">
-            <span role="img" aria-label="door">🚪</span> Smart Door Control
-          </Link>
-          <Link to="#environment">
-            <span role="img" aria-label="environment">🌍</span> Environment Monitor
-          </Link>
-          <Link to="#smart-voice">
-            <span role="img" aria-label="voice">🎙️</span> Smart Voice
-          </Link>
-          <Link to="/" onClick={handleLogout}>
-            <span role="img" aria-label="logout">🔓</span> Logout
-          </Link>
-        </nav>
-      </aside>
+      <Menu setIsLoggedIn={setIsLoggedIn} />
 
-      {/* Main Content */}
       <main className="main-content">
         <header className="main-header">
           <h1>Smart Door Control</h1>
@@ -99,7 +70,6 @@ const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
         </header>
 
         <section className="door-control-section">
-          {/* Door Control Form */}
           <div className="door-control-form">
             <div className="door-status">
               <span>{isDoorOn ? 'Mở cửa' : 'Đóng cửa'}</span>
@@ -123,7 +93,6 @@ const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
             </button>
           </div>
 
-          {/* History Section */}
           <div className="history-section">
             <h2>Lịch sử mở cửa</h2>
             <div className="history-status">
@@ -132,7 +101,7 @@ const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
             <table className="history-table">
               <thead>
                 <tr>
-                  <th>Nguời mở cửa</th>
+                  <th>Người mở cửa</th>
                   <th>ID người mở</th>
                   <th>Kiểu</th>
                   <th>Date</th>
@@ -174,7 +143,6 @@ const Door = ({ setIsLoggedIn, isDoorOn, setIsDoorOn }) => {
         </section>
       </main>
 
-      {/* Modal hiển thị ảnh */}
       {showImageModal && (
         <div className="modal-overlay">
           <div className="image-modal">
